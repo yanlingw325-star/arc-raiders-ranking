@@ -607,7 +607,40 @@
     .podium-item.p3 .pod-stage { height: 28px; background: linear-gradient(180deg,rgba(205,130,69,.12),rgba(205,130,69,.02)); }
 
     /* ════════════════════════════════════════
-       RANK LIST 4–200
+       TOP 4–10 HONOR CARDS
+    ════════════════════════════════════════ */
+    .top-ten-section { padding: 4px 16px 16px; }
+    .top-ten-label {
+      font-size: 10px; font-weight: 700; color: var(--text3);
+      letter-spacing: 2px; padding: 8px 4px 10px; text-align: center;
+    }
+    .top-ten-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .tt-card {
+      background: linear-gradient(135deg, rgba(255,140,0,.07), rgba(0,212,255,.04));
+      border: 1px solid rgba(255,140,0,.22);
+      border-radius: 12px; padding: 10px 12px;
+      display: flex; align-items: center; gap: 10px;
+      transition: border-color .2s, background .2s;
+    }
+    .tt-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+    .tt-rank {
+      font-size: 20px; font-weight: 900; color: var(--orange);
+      min-width: 26px; text-align: center; line-height: 1;
+    }
+    .tt-ava {
+      width: 38px; height: 38px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 700; flex-shrink: 0;
+    }
+    .tt-info { min-width: 0; flex: 1; }
+    .tt-name {
+      font-size: 12.5px; font-weight: 600;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .tt-vol { font-size: 11px; color: var(--cyan); font-weight: 700; margin-top: 3px; }
+
+    /* ════════════════════════════════════════
+       RANK LIST 11–200
     ════════════════════════════════════════ */
     .rank-list { padding: 0 16px 80px; }
     .rank-row {
@@ -651,7 +684,11 @@
       border-radius: 10px 0 0 10px; padding: 14px 0;
       cursor: pointer; display: flex; flex-direction: column;
       align-items: center; justify-content: center; gap: 5px;
-      transition: background .2s;
+      transition: background .2s, border-radius .25s, border .25s;
+    }
+    .toc-toggle.collapsed {
+      border-radius: 10px;
+      border-right: 1px solid rgba(0,212,255,.3);
     }
     .toc-toggle:hover { background: rgba(0,212,255,.3); }
     .toc-toggle-icon { font-size: 13px; line-height: 1; }
@@ -663,13 +700,13 @@
       background: rgba(10,16,32,.95);
       border: 1px solid rgba(0,212,255,.2); border-right: none;
       border-radius: 14px 0 0 14px;
-      padding: 14px 12px; min-width: 130px;
+      padding: 14px 12px; max-width: 200px; overflow: hidden;
       backdrop-filter: blur(12px);
-      transition: opacity .25s, transform .25s;
+      transition: opacity .25s, max-width .25s, padding .25s;
     }
     .toc-panel.hidden {
       opacity: 0; pointer-events: none;
-      transform: translateX(20px);
+      max-width: 0; padding: 0; border: none;
     }
     .toc-title {
       font-size: 10px; font-weight: 700; color: var(--text3);
@@ -725,7 +762,7 @@
 
   <div class="hero">
     <div class="arc-label">ARC RAIDERS<span class="season-chip">第二次远征</span></div>
-    <h1 class="hero-title">千岛交易参与<br>CDK &amp; 专属社区徽章抽奖</h1>
+    <h1 class="hero-title">上千岛交易参与<br>CDK &amp; 专属社区徽章抽奖</h1>
     <div class="hero-sub-line">CDK 和「奇袭者之神」称号等你拿</div>
     <p class="hero-desc">在千岛完成一笔 ARC Raiders 交易<br>即可参与本次专属大抽奖！</p>
     <div class="period-tag">📅 活动时间：3月3日 — 3月9日</div>
@@ -823,52 +860,6 @@
     </div>
   </div>
 
-  <!-- 4 张规则卡 -->
-  <div class="rules-cards">
-
-    <div class="rule-card rc-cyan">
-      <div class="rc-num">01</div>
-      <span class="rc-icon">📅</span>
-      <div class="rc-title">参与条件</div>
-      <div class="rc-desc">
-        🎮 <strong>CDK抽奖：</strong>活动期间完成至少 <strong>1笔</strong> ARC Raiders 交易即可参与<br><br>
-        🏅 <strong>专属徽章：</strong>同样完成至少 <strong>1笔</strong> 交易即可参与，三阶梯徽章按活动期间总交易量前200名发放
-      </div>
-    </div>
-
-    <div class="rule-card rc-orange">
-      <div class="rc-num">02</div>
-      <span class="rc-icon">📦</span>
-      <div class="rc-title">订单规则</div>
-      <div class="rc-desc">
-        同一笔订单关联多个商品，仅计为 <strong>1笔</strong> 订单，不重复叠加<br><br>
-        已取消、确认收货中、付款未成功的订单均为<strong>无效交易</strong>，不计入
-      </div>
-    </div>
-
-    <div class="rule-card rc-orange">
-      <div class="rc-num">03</div>
-      <span class="rc-icon">👤</span>
-      <div class="rc-title">参与资格</div>
-      <div class="rc-desc">
-        🎮 <strong>CDK抽奖：</strong>每人仅计 <strong>1个</strong> 抽奖名额，不因多笔订单重复计入<br><br>
-        🏅 <strong>专属徽章：</strong>活动期间交易量进入<strong>前200名</strong>，按排名阶梯获得对应徽章
-      </div>
-    </div>
-
-    <div class="rule-card rc-cyan">
-      <div class="rc-num">04</div>
-      <span class="rc-icon">📈</span>
-      <div class="rc-title">排名方式</div>
-      <div class="rc-desc">
-        按活动期间 <strong>有效交易笔数</strong> 由高到低排名<br><br>
-        🥇 第1-10名：奇袭者之神<br>
-        🥈 第11-100名：奇袭者人王<br>
-        🥉 第101-200名：灰烬行者
-      </div>
-    </div>
-
-  </div>
 
 </div>
 
@@ -938,6 +929,10 @@
 </div>
 
 <div class="podium"   id="podium"></div>
+<div class="top-ten-section" id="topTenSection">
+  <div class="top-ten-label">— 荣耀前十 —</div>
+  <div class="top-ten-grid" id="topTen"></div>
+</div>
 <div class="rank-list" id="rankList"></div>
 
 <div class="footer">
@@ -997,6 +992,7 @@
         volume: u.volume,
       }));
       renderPodium();
+      renderTopTen();
       renderList();
       lastUpdateTime = new Date();
       document.getElementById('lastRefresh').textContent = fmtTime(lastUpdateTime);
@@ -1105,15 +1101,33 @@
     document.getElementById('podium').innerHTML = html;
   }
 
-  /* ─── 渲染 4–200 列表 ─── */
+  /* ─── 渲染 TOP 4–10 荣耀卡片 ─── */
+  function renderTopTen() {
+    let html = '';
+    for (let i = 3; i < Math.min(10, USERS.length); i++) {
+      const u = USERS[i];
+      html += `
+        <div class="tt-card">
+          <div class="tt-rank">${u.rank}</div>
+          <div class="tt-ava ac${u.color}">${u.avatar}</div>
+          <div class="tt-info">
+            <div class="tt-name">${u.name}</div>
+            ${titleTag(u.rank)}
+            <div class="tt-vol">${u.volume} 笔</div>
+          </div>
+        </div>`;
+    }
+    document.getElementById('topTen').innerHTML = html;
+  }
+
+  /* ─── 渲染 11–200 列表 ─── */
   function renderList() {
     let html = '';
-    for (let i = 3; i < USERS.length; i++) {
+    for (let i = 10; i < USERS.length; i++) {
       const u = USERS[i];
-      const isHot = i < 9;
       html += `
         <div class="rank-row">
-          <div class="rank-num ${isHot ? 'hot' : ''}">${u.rank}</div>
+          <div class="rank-num">${u.rank}</div>
           <div class="rank-user">
             <div class="rank-ava ac${u.color}">${u.avatar}</div>
             <div class="rank-info">
@@ -1178,6 +1192,7 @@
     tocOpen = !tocOpen;
     document.getElementById('tocPanel').classList.toggle('hidden', !tocOpen);
     document.querySelector('.toc-toggle-icon').textContent = tocOpen ? '☰' : '❯';
+    document.querySelector('.toc-toggle').classList.toggle('collapsed', !tocOpen);
   }
 
   // 滚动高亮当前区块
