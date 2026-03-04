@@ -585,7 +585,7 @@
        PODIUM TOP 3
     ════════════════════════════════════════ */
     .podium {
-      padding: 28px 16px 20px;
+      padding: 28px 16px 20px; max-width: 380px; margin: 0 auto;
       background: linear-gradient(180deg, rgba(255,200,0,.03) 0%, transparent 100%);
     }
     .podium-row { display: flex; justify-content: center; align-items: flex-end; gap: 10px; }
@@ -609,12 +609,12 @@
     /* ════════════════════════════════════════
        TOP 4–10 HONOR CARDS
     ════════════════════════════════════════ */
-    .top-ten-section { padding: 4px 16px 16px; }
+    .top-ten-section { padding: 4px 0 16px; max-width: 380px; margin: 0 auto; }
     .top-ten-label {
       font-size: 10px; font-weight: 700; color: var(--text3);
       letter-spacing: 2px; padding: 8px 4px 10px; text-align: center;
     }
-    .top-ten-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .top-ten-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 16px; }
     .tt-card {
       background: linear-gradient(135deg, rgba(255,140,0,.07), rgba(0,212,255,.04));
       border: 1px solid rgba(255,140,0,.22);
@@ -644,9 +644,9 @@
     ════════════════════════════════════════ */
     .rank-list { padding: 0 16px 80px; }
     .rank-row {
-      display: grid; grid-template-columns: 50px 1fr 76px;
-      gap: 8px; align-items: center;
-      padding: 11px 6px; border-bottom: 1px solid var(--border);
+      display: grid; grid-template-columns: 44px minmax(100px, 180px) 68px;
+      gap: 10px; align-items: center; justify-content: center;
+      padding: 11px 0; border-bottom: 1px solid var(--border);
     }
     .rank-num { text-align: center; font-size: 15px; font-weight: 700; color: var(--text3); }
     .rank-num.hot { color: var(--orange); }
