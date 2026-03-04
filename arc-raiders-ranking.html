@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FW0N3LY62D"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FW0N3LY62D');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ARC Raiders 交易排行榜 · 千岛</title>
+
+  <!-- 英文标题字体：Bebas Neue（游戏风格）·通过国内镜像加载 -->
+  <link rel="preconnect" href="https://fonts.loli.net" crossorigin />
+  <link href="https://fonts.loli.net/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #070b14;
+      --bg2:    #0c1220;
+      --orange: #ff6524;
+      --orange2:#ff8c42;
+      --cyan:   #00d4ff;
+      --gold:   #ffc800;
+      --text:   #ffffff;
+      --text2:  rgba(255,255,255,.65);
+      --text3:  rgba(255,255,255,.35);
+      --border: rgba(255,255,255,.07);
+    }
+
+    html { background: var(--bg); }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC',
+                   'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ════════════════════════════════════════
+       HEADER
+    ════════════════════════════════════════ */
+    .header {
+      position: relative;
+      overflow: hidden;
+      padding-bottom: 28px;
+      background-image: url('./arc-raiders-logo.webp');
+      background-size: cover;
+      background-position: center 20%;
+    }
+
+    /* 科技感网格 */
+    .hdr-grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0,212,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,.5) 0%, transparent 72%);
+      -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,.5) 0%, transparent 72%);
+    }
+
+    /* 径向光晕 */
+    .hdr-glow-a {
+      position: absolute; pointer-events: none;
+      top: -80px; left: 40%; width: 320px; height: 320px;
+      background: radial-gradient(ellipse, rgba(255,101,36,.22) 0%, transparent 65%);
+    }
+    .hdr-glow-b {
+      position: absolute; pointer-events: none;
+      top: -30px; right: -50px; width: 220px; height: 220px;
+      background: radial-gradient(ellipse, rgba(0,212,255,.13) 0%, transparent 65%);
+    }
+
+    /* 图片模式下的暗色遮罩 */
+    .hdr-overlay {
+      position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg,
+        rgba(7,11,20,.55) 0%,
+        rgba(7,11,20,.70) 40%,
+        rgba(7,11,20,.88) 75%,
+        #070b14 100%);
+    }
+
+    /* ── 顶栏 ── */
+    .topbar {
+      position: relative;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px 0;
+    }
+
+    .logo { font-size: 22px; font-weight: 800; }
+    .logo em { font-style: normal; color: var(--orange); }
+
+    .live-badge {
+      display: flex; align-items: center; gap: 5px;
+      background: rgba(0,255,120,.08);
+      border: 1px solid rgba(0,255,120,.22);
+      border-radius: 20px; padding: 4px 10px;
+      font-size: 11px; color: #00ff88; font-weight: 600;
+    }
+    .live-dot {
+      width: 5px; height: 5px;
+      background: #00ff88; border-radius: 50%;
+      animation: blink 1.4s infinite;
+    }
+
+    /* ── Hero 标题区 ── */
+    .hero {
+      position: relative;
+      padding: 22px 20px 0;
+      text-align: center;
+    }
+
+    /* "ARC RAIDERS" 英文装饰标签 */
+    .arc-label {
+      font-family: 'Bebas Neue', 'Impact', 'Arial Black', sans-serif;
+      font-size: 13px;
+      letter-spacing: 8px;
+      color: var(--orange);
+      display: inline-block;
+      margin-bottom: 6px;
+      text-shadow: 0 0 24px rgba(255,101,36,.55);
+    }
+
+    .season-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: linear-gradient(135deg, var(--orange), var(--orange2));
+      color: #fff; font-size: 11px; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px; margin-left: 8px;
+      vertical-align: middle; letter-spacing: .5px;
+    }
+
+    /* 主标题：大号 + 渐变 + 发光 */
+    .hero-title {
+      font-weight: 900;
+      font-size: 36px;
+      line-height: 1.18;
+      letter-spacing: -1.5px;
+      background: linear-gradient(150deg, #ffffff 0%, #d8eeff 38%, #00d4ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      /* glow via wrapper filter */
+      filter: drop-shadow(0 0 28px rgba(0,212,255,.3));
+      margin-bottom: 6px;
+    }
+
+    /* "× 专属徽章抽奖" 副标行 */
+    .hero-sub-line {
+      font-family: 'Bebas Neue', 'Impact', 'Arial Black', sans-serif;
+      font-size: 15px;
+      letter-spacing: 5px;
+      color: var(--gold);
+      opacity: .82;
+      margin-bottom: 12px;
+      text-shadow: 0 0 16px rgba(255,200,0,.4);
+    }
+
+    .hero-desc {
+      font-size: 13px; color: var(--text2); line-height: 1.7; margin-bottom: 14px;
+    }
+
+    .period-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(0,212,255,.08);
+      border: 1px solid rgba(0,212,255,.22);
+      border-radius: 20px; padding: 6px 16px;
+      font-size: 12px; color: var(--cyan); font-weight: 500;
+    }
+
+    /* ════════════════════════════════════════
+       COUNTDOWN
+    ════════════════════════════════════════ */
+    .countdown-wrap {
+      position: relative;
+      margin: 20px 16px 0;
+      background: linear-gradient(135deg, rgba(255,101,36,.06), rgba(0,212,255,.06));
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .cd-label { font-size: 12px; color: var(--text3); margin-bottom: 4px; }
+    .cd-hint  { font-size: 13px; font-weight: 600; }
+    .cd-time  { display: flex; align-items: center; gap: 4px; }
+    .cd-unit  { text-align: center; }
+    .cd-num {
+      display: block;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 7px; padding: 5px 0;
+      width: 38px; font-size: 18px; font-weight: 800;
+      color: var(--cyan); text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+    .cd-text { font-size: 10px; color: var(--text3); margin-top: 3px; }
+    .cd-sep  { font-size: 18px; font-weight: 700; color: var(--text3); line-height: 1; margin-bottom: 12px; }
+
+    /* ── 快捷跳转按钮 ── */
+    .quick-btns {
+      display: flex; gap: 10px; justify-content: center;
+      padding: 20px 20px 28px;
+    }
+    .qbtn {
+      display: flex; align-items: center; gap: 7px;
+      flex: 1; max-width: 200px; justify-content: center;
+      padding: 12px 16px; border-radius: 14px; border: none;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+      text-decoration: none; transition: transform .15s, opacity .15s;
+      letter-spacing: .2px;
+    }
+    .qbtn:hover { transform: translateY(-2px); opacity: .9; }
+    .qbtn:active { transform: translateY(0); }
+    .qbtn-rank {
+      background: linear-gradient(135deg, var(--orange), var(--orange2));
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(255,101,36,.35);
+    }
+    .qbtn-search {
+      background: rgba(0,212,255,.12);
+      border: 1px solid rgba(0,212,255,.35) !important;
+      color: var(--cyan);
+    }
+    .qbtn-icon { font-size: 16px; line-height: 1; }
+
+    /* ════════════════════════════════════════
+       SECTIONS
+    ════════════════════════════════════════ */
+    .sec { padding: 20px 16px 0; }
+
+    .sec-title {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; color: var(--text3);
+      letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .sec-title::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* ════════════════════════════════════════
+       PRIZES
+    ════════════════════════════════════════ */
+    .prizes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .prize-card {
+      border-radius: 14px; padding: 16px;
+      border: 1px solid transparent; position: relative; overflow: hidden;
+    }
+    .p-gold { background: linear-gradient(145deg, rgba(255,200,0,.1), rgba(255,140,0,.04)); border-color: rgba(255,200,0,.25); }
+    .p-cyan { background: linear-gradient(145deg, rgba(0,212,255,.1), rgba(0,100,200,.04)); border-color: rgba(0,212,255,.25); }
+
+    .prize-icon { font-size: 30px; margin-bottom: 8px; }
+    .prize-name { font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
+    .prize-num  { font-size: 26px; font-weight: 900; }
+    .prize-num.gold { color: var(--gold); }
+    .prize-num.cyan { color: var(--cyan); }
+    .prize-unit { font-size: 13px; margin-left: 2px; color: var(--text3); }
+    .prize-sub  { font-size: 11px; margin-top: 4px; }
+    .prize-sub.gold { color: rgba(255,200,0,.55); }
+    .prize-sub.cyan { color: rgba(0,212,255,.55); }
+
+    /* ════════════════════════════════════════
+       RULES — 全新设计
+    ════════════════════════════════════════ */
+
+    /* 流程图 */
+    .rules-flow {
+      display: flex; align-items: stretch;
+      background: rgba(255,255,255,.025);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .flow-step {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 14px 4px; gap: 5px;
+      text-align: center;
+    }
+    .flow-step:not(:last-child) {
+      border-right: 1px solid var(--border);
+    }
+    .flow-icon { font-size: 22px; }
+    .flow-label {
+      font-size: 10.5px; color: var(--text2); font-weight: 500;
+      white-space: nowrap;
+    }
+    .flow-arrow-wrap {
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 2px; color: rgba(0,212,255,.35); font-size: 12px;
+      align-self: center;
+    }
+
+    /* 四张规则卡片 */
+    .rules-cards {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 8px; margin-bottom: 8px;
+    }
+    .rule-card {
+      border-radius: 12px; padding: 14px 13px;
+      border: 1px solid transparent; position: relative; overflow: hidden;
+    }
+    .rc-cyan {
+      background: linear-gradient(145deg, rgba(0,212,255,.07), rgba(0,80,160,.03));
+      border-color: rgba(0,212,255,.15);
+    }
+    .rc-orange {
+      background: linear-gradient(145deg, rgba(255,101,36,.07), rgba(255,180,0,.03));
+      border-color: rgba(255,101,36,.15);
+    }
+    .rc-num {
+      font-family: 'Bebas Neue', 'Impact', 'Arial Black', sans-serif;
+      font-size: 30px; letter-spacing: -1px; line-height: 1;
+      margin-bottom: 4px;
+    }
+    .rc-cyan   .rc-num { color: rgba(0,212,255,.22); }
+    .rc-orange .rc-num { color: rgba(255,101,36,.22); }
+    .rc-icon   { font-size: 20px; display: block; margin-bottom: 6px; }
+    .rc-title  { font-size: 13px; font-weight: 700; margin-bottom: 5px; }
+    .rc-desc   { font-size: 11.5px; color: var(--text2); line-height: 1.6; }
+    .rc-desc strong { color: var(--text); }
+
+    /* 警告条 */
+    .rule-warn {
+      display: flex; align-items: flex-start; gap: 8px;
+      background: rgba(255,101,36,.06);
+      border: 1px solid rgba(255,101,36,.18);
+      border-radius: 10px; padding: 12px 14px;
+      font-size: 12px; color: rgba(255,140,80,.9); line-height: 1.65;
+    }
+    .rule-warn-icon { font-size: 14px; margin-top: 1px; flex-shrink: 0; }
+
+    /* ════════════════════════════════════════
+       CTA 强提醒专区
+    ════════════════════════════════════════ */
+    .cta-wrap {
+      margin: 16px 16px 0;
+      border-radius: 16px;
+      padding: 18px 16px;
+      background: linear-gradient(135deg, rgba(255,101,36,.15) 0%, rgba(255,200,0,.08) 100%);
+      border: 1px solid rgba(255,101,36,.4);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-wrap::before {
+      content: '';
+      position: absolute; inset: 0; border-radius: 16px;
+      background: linear-gradient(135deg, rgba(255,101,36,.08), transparent);
+      animation: ctaPulse 2.4s ease-in-out infinite;
+    }
+    @keyframes ctaPulse {
+      0%,100% { opacity: 1; } 50% { opacity: 0.4; }
+    }
+    .cta-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: linear-gradient(135deg, var(--orange), var(--gold));
+      color: #000; font-size: 11px; font-weight: 800;
+      padding: 3px 10px; border-radius: 20px;
+      letter-spacing: .5px; margin-bottom: 10px;
+    }
+    .cta-desc {
+      font-size: 13px; color: var(--text2);
+      line-height: 1.75; margin-bottom: 14px;
+      position: relative;
+    }
+    .cta-desc strong { color: #fff; }
+    .cta-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%;
+      background: linear-gradient(135deg, var(--orange), #ff9500);
+      color: #fff; font-size: 15px; font-weight: 800;
+      padding: 13px 0; border-radius: 12px;
+      text-decoration: none;
+      letter-spacing: .5px;
+      box-shadow: 0 4px 20px rgba(255,101,36,.45);
+      position: relative;
+      transition: opacity .15s;
+    }
+    .cta-btn:active { opacity: .82; }
+
+
+    .lb-banner {
+      position: relative;
+      height: 120px;
+      overflow: hidden;
+      background-image: url('./arc-raiders-release-date.jpg');
+      background-size: cover;
+      background-position: center 30%;
+    }
+    .lb-banner::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg,
+        rgba(7,11,20,.35) 0%,
+        rgba(7,11,20,.65) 60%,
+        var(--bg2) 100%);
+    }
+    .lb-banner-text {
+      position: absolute; bottom: 14px; left: 16px; z-index: 1;
+      font-size: 20px; font-weight: 900;
+      background: linear-gradient(120deg, #fff 0%, #00d4ff 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 12px rgba(0,212,255,.4));
+    }
+
+    /* ─── 查询我的排名 ─── */
+    .search-section {
+      max-width: 640px; margin: 0 auto 36px; padding: 0 16px;
+    }
+    .search-card {
+      background: linear-gradient(135deg, #0c1525 0%, #0a1020 100%);
+      border: 1px solid rgba(0,212,255,.25);
+      border-radius: 20px;
+      padding: 28px 24px 22px;
+      position: relative; overflow: hidden;
+      box-shadow: 0 0 40px rgba(0,212,255,.06);
+    }
+    .search-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at top left, rgba(0,212,255,.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .search-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+    }
+    .search-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(0,212,255,.12); border: 1px solid rgba(0,212,255,.2);
+      display: flex; align-items: center; justify-content: center; font-size: 17px;
+    }
+    .search-title-wrap { flex: 1; }
+    .search-title {
+      font-size: 15px; font-weight: 800; color: #fff; line-height: 1.2;
+    }
+    .search-subtitle {
+      font-size: 11px; color: var(--text2); margin-top: 2px;
+    }
+    .search-divider {
+      height: 1px; background: rgba(255,255,255,.06); margin: 16px 0;
+    }
+    .search-row {
+      display: flex; gap: 10px;
+    }
+    .search-input {
+      flex: 1; background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1); border-radius: 12px;
+      padding: 11px 14px; color: #fff; font-size: 14px; outline: none;
+      transition: border-color .2s, background .2s;
+    }
+    .search-input::placeholder { color: rgba(255,255,255,.25); }
+    .search-input:focus { border-color: var(--cyan); background: rgba(0,212,255,.04); }
+    .search-btn {
+      background: linear-gradient(135deg, var(--cyan), #0099cc);
+      color: #070b14; border: none; border-radius: 12px;
+      padding: 11px 22px; font-size: 14px; font-weight: 800;
+      cursor: pointer; transition: opacity .15s, transform .1s;
+      white-space: nowrap; letter-spacing: .3px;
+    }
+    .search-btn:hover:not(:disabled) { opacity: .88; transform: translateY(-1px); }
+    .search-btn:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+    .search-agree {
+      display: flex; align-items: center; gap: 8px;
+      margin-top: 12px; cursor: pointer; user-select: none;
+    }
+    .search-agree input[type=checkbox] { display: none; }
+    .agree-box {
+      width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0;
+      border: 1.5px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,.04);
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color .2s, background .2s;
+    }
+    .agree-box .check-mark { display: none; font-size: 11px; color: #070b14; }
+    .search-agree input:checked ~ .agree-box {
+      background: var(--cyan); border-color: var(--cyan);
+    }
+    .search-agree input:checked ~ .agree-box .check-mark { display: block; }
+    .agree-label { font-size: 12px; color: var(--text2); line-height: 1.4; }
+    .agree-label em { color: var(--cyan); font-style: normal; }
+    .search-result {
+      margin-top: 18px; display: none;
+      animation: fadeSlideIn .25s ease;
+    }
+    .search-result.show { display: block; }
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .result-found {
+      background: rgba(0,212,255,.07);
+      border: 1px solid rgba(0,212,255,.25);
+      border-radius: 14px; padding: 18px 16px;
+      display: flex; align-items: center; gap: 18px;
+    }
+    .result-rank-block { text-align: center; min-width: 60px; }
+    .result-rank-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 46px; line-height: 1; color: var(--cyan);
+    }
+    .result-rank-label { font-size: 10px; color: var(--text2); margin-top: 1px; letter-spacing: .5px; }
+    .result-divider-v {
+      width: 1px; height: 56px; background: rgba(0,212,255,.2); flex-shrink: 0;
+    }
+    .result-info { flex: 1; }
+    .result-name { font-size: 16px; font-weight: 800; margin-bottom: 5px; }
+    .result-vol { font-size: 12px; color: var(--text2); margin-top: 7px; }
+    .result-vol strong { color: #fff; }
+    .result-gap { font-size: 12px; color: var(--orange2); margin-top: 5px; }
+    .result-gap strong { color: #fff; }
+    .result-not-found {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 14px; padding: 18px 16px;
+      font-size: 13px; color: var(--text2); text-align: center; line-height: 1.7;
+    }
+    .privacy-note {
+      text-align: center; font-size: 11px; color: var(--text3);
+      margin-top: 10px;
+    }
+
+    /* ─── 称号标签 ─── */
+    .title-badge {
+      display: inline-flex; align-items: center;
+      border-radius: 5px; padding: 1px 6px;
+      font-size: 10px; font-weight: 700; letter-spacing: .3px;
+      margin-top: 3px;
+    }
+    .title-god  { background: rgba(255,200,0,.15); border: 1px solid rgba(255,200,0,.4); color: #ffc800; }
+    .title-king { background: rgba(180,200,220,.12); border: 1px solid rgba(180,200,220,.35); color: #c8d8e8; }
+    .title-ash  { background: rgba(150,120,90,.12); border: 1px solid rgba(150,120,90,.3); color: #b09070; }
+
+
+    .lb-sticky {
+      position: sticky; top: 0; z-index: 20;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px 0;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .lb-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .lb-heading {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 16px; font-weight: 800;
+    }
+    .top200-badge {
+      background: linear-gradient(135deg, var(--orange), var(--orange2));
+      color: #fff; font-size: 10px; font-weight: 700;
+      padding: 2px 8px; border-radius: 10px; letter-spacing: .5px;
+    }
+    .lb-refresh-info {
+      display: flex; flex-direction: column; align-items: flex-end; gap: 1px;
+    }
+    .lb-next-update {
+      font-size: 11px; color: var(--cyan);
+    }
+    .lb-last-update {
+      font-size: 10px; color: var(--text3);
+    }
+    .lb-cols {
+      display: grid; grid-template-columns: 50px 1fr 76px;
+      gap: 8px; padding: 0 6px 10px;
+    }
+    .lb-col { font-size: 11px; color: var(--text3); font-weight: 500; }
+    .lb-col:last-child { text-align: right; }
+
+    /* ════════════════════════════════════════
+       PODIUM TOP 3
+    ════════════════════════════════════════ */
+    .podium {
+      padding: 28px 16px 20px;
+      background: linear-gradient(180deg, rgba(255,200,0,.03) 0%, transparent 100%);
+    }
+    .podium-row { display: flex; justify-content: center; align-items: flex-end; gap: 10px; }
+    .podium-item { flex: 1; max-width: 108px; text-align: center; }
+    .podium-item.p1 { order: 2; }
+    .podium-item.p2 { order: 1; }
+    .podium-item.p3 { order: 3; }
+    .pod-avatar-wrap { position: relative; display: inline-block; margin-bottom: 8px; }
+    .pod-crown { position: absolute; top: -16px; left: 50%; transform: translateX(-50%); font-size: 18px; }
+    .pod-avatar { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; }
+    .podium-item.p1 .pod-avatar { width: 68px; height: 68px; font-size: 24px; background: linear-gradient(135deg,#ffd700,#ffaa00); box-shadow: 0 0 24px rgba(255,200,0,.45); }
+    .podium-item.p2 .pod-avatar { background: linear-gradient(135deg,#cdd5e0,#9ba8b8); box-shadow: 0 0 16px rgba(200,210,220,.25); }
+    .podium-item.p3 .pod-avatar { background: linear-gradient(135deg,#cd8245,#9c5e2a); box-shadow: 0 0 16px rgba(205,130,69,.25); }
+    .pod-name { font-size: 12px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 2px; }
+    .pod-vol  { font-size: 11px; color: var(--text3); margin-bottom: 8px; }
+    .pod-stage { border-radius: 8px 8px 0 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 8px; font-size: 16px; }
+    .podium-item.p1 .pod-stage { height: 54px; background: linear-gradient(180deg,rgba(255,200,0,.18),rgba(255,200,0,.03)); }
+    .podium-item.p2 .pod-stage { height: 38px; background: linear-gradient(180deg,rgba(200,210,220,.12),rgba(200,210,220,.02)); }
+    .podium-item.p3 .pod-stage { height: 28px; background: linear-gradient(180deg,rgba(205,130,69,.12),rgba(205,130,69,.02)); }
+
+    /* ════════════════════════════════════════
+       RANK LIST 4–200
+    ════════════════════════════════════════ */
+    .rank-list { padding: 0 16px 80px; }
+    .rank-row {
+      display: grid; grid-template-columns: 50px 1fr 76px;
+      gap: 8px; align-items: center;
+      padding: 11px 6px; border-bottom: 1px solid var(--border);
+    }
+    .rank-num { text-align: center; font-size: 15px; font-weight: 700; color: var(--text3); }
+    .rank-num.hot { color: var(--orange); }
+    .rank-user { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .rank-ava  { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+    .rank-info { min-width: 0; }
+    .rank-name { font-size: 13.5px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .rank-sub  { font-size: 11px; color: var(--text3); margin-top: 1px; }
+    .rank-vol  { text-align: right; }
+    .rank-vol-num  { font-size: 15px; font-weight: 700; color: var(--cyan); }
+    .rank-vol-unit { font-size: 10px; color: var(--text3); }
+    .prize-tag {
+      display: inline-flex; align-items: center; gap: 3px;
+      background: rgba(255,200,0,.1); border: 1px solid rgba(255,200,0,.2);
+      border-radius: 6px; padding: 1px 5px; font-size: 10px; color: var(--gold); margin-top: 3px;
+    }
+
+    /* ════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════ */
+    .footer {
+      text-align: center; padding: 14px 16px 28px;
+      font-size: 11px; color: var(--text3); line-height: 1.75;
+    }
+
+    /* ════════════════════════════════════════
+       AVATAR COLORS
+    ════════════════════════════════════════ */
+    .ac0 { background: linear-gradient(135deg,#7c3aed,#a855f7); }
+    .ac1 { background: linear-gradient(135deg,#0284c7,#38bdf8); }
+    .ac2 { background: linear-gradient(135deg,#ea580c,#fb923c); }
+    .ac3 { background: linear-gradient(135deg,#be185d,#ec4899); }
+    .ac4 { background: linear-gradient(135deg,#15803d,#4ade80); }
+    .ac5 { background: linear-gradient(135deg,#b45309,#fbbf24); }
+    .ac6 { background: linear-gradient(135deg,#0f766e,#2dd4bf); }
+    .ac7 { background: linear-gradient(135deg,#1d4ed8,#60a5fa); }
+
+    /* ════════════════════════════════════════
+       ANIMATIONS
+    ════════════════════════════════════════ */
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    ::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     HEADER
+══════════════════════════════════════ -->
+<div class="header">
+  <div class="hdr-grid"></div>
+  <div class="hdr-glow-a"></div>
+  <div class="hdr-glow-b"></div>
+  <div class="hdr-overlay"></div>
+
+  <div class="topbar">
+    <img src="./1e90fab34e28aef19d8b111c41f3b4d9.png" alt="千岛" style="height:28px;object-fit:contain;" />
+    <div class="live-badge"><span class="live-dot"></span>实时更新</div>
+  </div>
+
+  <div class="hero">
+    <div class="arc-label">ARC RAIDERS<span class="season-chip">第二次远征</span></div>
+    <h1 class="hero-title">千岛交易参与<br>CDK &amp; 专属社区徽章抽奖</h1>
+    <div class="hero-sub-line">CDK 和「奇袭者之神」称号等你拿</div>
+    <p class="hero-desc">在千岛完成一笔 ARC Raiders 交易<br>即可参与本次专属大抽奖！</p>
+    <div class="period-tag">📅 活动时间：3月3日 — 3月9日</div>
+  </div>
+
+  <div class="countdown-wrap">
+    <div>
+      <div class="cd-label">距活动结束</div>
+      <div class="cd-hint">冲刺排名，争夺奖品！</div>
+    </div>
+    <div class="cd-time">
+      <div class="cd-unit"><span class="cd-num" id="cd-d">06</span><div class="cd-text">天</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><span class="cd-num" id="cd-h">23</span><div class="cd-text">时</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><span class="cd-num" id="cd-m">59</span><div class="cd-text">分</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><span class="cd-num" id="cd-s">59</span><div class="cd-text">秒</div></div>
+    </div>
+  </div>
+
+  <div class="quick-btns">
+    <a class="qbtn qbtn-rank" href="#leaderboard">
+      <span class="qbtn-icon">🏆</span> 查看排行榜
+    </a>
+    <a class="qbtn qbtn-search" href="#my-rank">
+      <span class="qbtn-icon">🔍</span> 查询我的排名
+    </a>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PRIZES
+══════════════════════════════════════ -->
+
+<!-- 活动奖品1 -->
+<div class="sec">
+  <div class="sec-title">活动奖品1 · ARC CDK 本体抽奖</div>
+  <div class="prize-card p-gold" style="display:flex; align-items:center; gap:14px; padding:18px;">
+    <div class="prize-icon" style="font-size:36px;">🎮</div>
+    <div>
+      <div class="prize-name" style="font-size:14px;">ARC Raiders 游戏本体 CDK</div>
+      <div><span class="prize-num gold">10</span><span class="prize-unit">份</span></div>
+      <div class="prize-sub gold">游戏本体激活码 · 随机抽取</div>
+    </div>
+  </div>
+</div>
+
+<!-- 活动奖品2 -->
+<div class="sec" style="padding-top:14px;">
+  <div class="sec-title">活动奖品2 · 千岛社区 &amp; 名片专属徽章</div>
+  <div class="prize-card p-cyan" style="display:flex; align-items:center; gap:14px; padding:18px; margin-bottom:10px;">
+    <div class="prize-icon" style="font-size:36px;">🏅</div>
+    <div>
+      <div class="prize-name" style="font-size:14px;">千岛社区 &amp; 名片专属徽章</div>
+      <div><span class="prize-num cyan">200</span><span class="prize-unit">份</span></div>
+      <div class="prize-sub cyan">限量社区专属标识 · 按排名阶梯发放</div>
+    </div>
+  </div>
+  <!-- 徽章等级说明图 -->
+  <img src="./5e38a880cdfcc43dae5ff4f0b25a3bb8.jpg" alt="徽章等级说明"
+    style="width:100%; max-height:1000px; border-radius:10px; object-fit:contain; background:#0c1220; display:block;" />
+</div>
+
+<!-- ══════════════════════════════════════
+     RULES — 重新设计
+══════════════════════════════════════ -->
+<div class="sec">
+  <div class="sec-title">活动规则</div>
+
+  <!-- 活动海报 -->
+  <img src="./d692dd55a33a6761f27a7ff23fdd33d4.jpg" alt="活动说明海报"
+    style="width:72%; max-height:1000px; display:block; margin:0 auto 12px; border-radius:12px; object-fit:contain;" />
+
+  <!-- 参与流程一览 -->
+  <div class="rules-flow">
+    <div class="flow-step">
+      <div class="flow-icon">🛒</div>
+      <div class="flow-label">完成交易</div>
+    </div>
+    <div class="flow-arrow-wrap">›</div>
+    <div class="flow-step">
+      <div class="flow-icon">📊</div>
+      <div class="flow-label">自动计入</div>
+    </div>
+    <div class="flow-arrow-wrap">›</div>
+    <div class="flow-step">
+      <div class="flow-icon">🏆</div>
+      <div class="flow-label">榜单更新</div>
+    </div>
+    <div class="flow-arrow-wrap">›</div>
+    <div class="flow-step">
+      <div class="flow-icon">🎁</div>
+      <div class="flow-label">参与抽奖</div>
+    </div>
+  </div>
+
+  <!-- 4 张规则卡 -->
+  <div class="rules-cards">
+
+    <div class="rule-card rc-cyan">
+      <div class="rc-num">01</div>
+      <span class="rc-icon">📅</span>
+      <div class="rc-title">参与条件</div>
+      <div class="rc-desc">
+        🎮 <strong>CDK抽奖：</strong>活动期间完成至少 <strong>1笔</strong> ARC Raiders 交易即可参与<br><br>
+        🏅 <strong>专属徽章：</strong>同样完成至少 <strong>1笔</strong> 交易即可参与，三阶梯徽章按活动期间总交易量前200名发放
+      </div>
+    </div>
+
+    <div class="rule-card rc-orange">
+      <div class="rc-num">02</div>
+      <span class="rc-icon">📦</span>
+      <div class="rc-title">订单规则</div>
+      <div class="rc-desc">
+        同一笔订单关联多个商品，仅计为 <strong>1笔</strong> 订单，不重复叠加<br><br>
+        已取消、确认收货中、付款未成功的订单均为<strong>无效交易</strong>，不计入
+      </div>
+    </div>
+
+    <div class="rule-card rc-orange">
+      <div class="rc-num">03</div>
+      <span class="rc-icon">👤</span>
+      <div class="rc-title">参与资格</div>
+      <div class="rc-desc">
+        🎮 <strong>CDK抽奖：</strong>每人仅计 <strong>1个</strong> 抽奖名额，不因多笔订单重复计入<br><br>
+        🏅 <strong>专属徽章：</strong>活动期间交易量进入<strong>前200名</strong>，按排名阶梯获得对应徽章
+      </div>
+    </div>
+
+    <div class="rule-card rc-cyan">
+      <div class="rc-num">04</div>
+      <span class="rc-icon">📈</span>
+      <div class="rc-title">排名方式</div>
+      <div class="rc-desc">
+        按活动期间 <strong>有效交易笔数</strong> 由高到低排名<br><br>
+        🥇 第1-10名：奇袭者之神<br>
+        🥈 第11-100名：奇袭者人王<br>
+        🥉 第101-200名：灰烬行者
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     CTA 强提醒专区
+══════════════════════════════════════ -->
+<div class="cta-wrap">
+  <div class="cta-badge">⚡ 立即参与</div>
+  <div class="cta-desc">
+    千岛 APP 交易 ARC 最全物资冲榜吧！<br>
+    <strong>PC 端目前仅支持金币交易</strong>，更多物资请前往 APP 完成交易
+  </div>
+  <a href="https://qiandao.com/currency/" target="_blank" class="cta-btn">
+    🖥️ 立即前往千岛 PC 端交易
+  </a>
+</div>
+
+<!-- ══════════════════════════════════════
+     查询我的排名
+══════════════════════════════════════ -->
+<div class="search-section" id="my-rank">
+  <div class="search-card">
+    <div class="search-header">
+      <div class="search-icon">🔍</div>
+      <div class="search-title-wrap">
+        <div class="search-title">查询我的实时排名</div>
+        <div class="search-subtitle">千岛 App → 我的 → 设置 → 账号与隐私 → 复制用户 ID</div>
+      </div>
+    </div>
+    <div class="search-divider"></div>
+    <div class="search-row">
+      <input class="search-input" id="searchInput" type="text" placeholder="输入你的千岛用户 ID…" maxlength="30" />
+      <button class="search-btn" id="searchBtn" onclick="searchUser()" disabled>查询</button>
+    </div>
+    <label class="search-agree">
+      <input type="checkbox" id="agreeCheck" onchange="document.getElementById('searchBtn').disabled=!this.checked" />
+      <span class="agree-box"><span class="check-mark">✓</span></span>
+      <span class="agree-label">我确认此 ID 为<em>本人千岛账号</em>，不查询他人信息</span>
+    </label>
+    <div class="search-result" id="searchResult"></div>
+  </div>
+  <div class="privacy-note">🔒 本功能仅供查询本人排名，数据每 30 分钟同步一次</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     LEADERBOARD
+══════════════════════════════════════ -->
+<div class="lb-banner" id="leaderboard">
+  <div class="lb-banner-text">🏆 交易排行榜</div>
+</div>
+
+<div class="lb-sticky">
+  <div class="lb-top">
+    <div class="lb-heading">
+      <span class="top200-badge">TOP 200</span>
+    </div>
+    <div class="lb-refresh-info">
+      <div class="lb-next-update">下次刷新 <span id="nextRefresh">30:00</span></div>
+      <div class="lb-last-update">上次更新 <span id="lastRefresh">—</span></div>
+    </div>
+  </div>
+  <div class="lb-cols">
+    <div class="lb-col">排名</div>
+    <div class="lb-col">用户</div>
+    <div class="lb-col" style="text-align:right">交易量</div>
+  </div>
+</div>
+
+<div class="podium"   id="podium"></div>
+<div class="rank-list" id="rankList"></div>
+
+<div class="footer">
+  每 30 分钟自动刷新一次 · 排名仅供参考<br>
+  <span style="opacity:.45">© 千岛 · ARC Raiders 新赛季活动</span>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCRIPT
+══════════════════════════════════════ -->
+<script>
+  /* ─────────────────────────────────────────
+     真实数据接入
+     由 update_leaderboard.py 每 30 分钟写入 data.json
+     HTML 通过 fetch('./data.json') 读取
+  ───────────────────────────────────────── */
+
+  function maskName(s) {
+    const a = [...s];
+    if (a.length <= 3) return a[0] + '**';
+    const keep = a.length <= 5 ? 1 : 2;
+    return a.slice(0, keep).join('') + '***' + a[a.length - 1];
+  }
+
+  let USERS = [];
+  let RAW_USERS = [];   // 保留原始名字，用于搜索
+
+  async function loadData() {
+    try {
+      const res  = await fetch('./data.json?_=' + Date.now());
+      const data = await res.json();
+      RAW_USERS = data.users;
+      USERS = data.users.map((u, i) => ({
+        rank:   i + 1,
+        name:   u.name,   // Python 已打码，直接使用
+        avatar: [...u.name].find(c => /[\u4e00-\u9fa5A-Za-z0-9]/.test(c)) || '?',
+        color:  i % 8,
+        volume: u.volume,
+      }));
+      renderPodium();
+      renderList();
+      lastUpdateTime = new Date();
+      document.getElementById('lastRefresh').textContent = fmtTime(lastUpdateTime);
+      refreshCountdown = REFRESH_INTERVAL;
+    } catch (e) {
+      console.error('数据加载失败，请确认 update_leaderboard.py 正在运行:', e);
+    }
+  }
+
+  /* ─── 查询我的排名 ─── */
+  function maskUid(uid) {
+    const n = uid.length;
+    if (n <= 6) return uid.slice(0, 2) + '***' + uid.slice(-1);
+    const mid = Math.floor((n - 3) / 2);
+    return uid.slice(0, mid) + '***' + uid.slice(mid + 3);
+  }
+
+  function searchUser() {
+    const keyword = document.getElementById('searchInput').value.trim();
+    const box     = document.getElementById('searchResult');
+    if (!keyword) return;
+
+    // 对输入 UID 做同款打码，再与 data.json 中已打码的 UID 精确匹配
+    const maskedInput = maskUid(keyword);
+    const idx = RAW_USERS.findIndex(u => u.uid === maskedInput);
+
+    if (idx === -1) {
+      const last     = RAW_USERS[RAW_USERS.length - 1];
+      const minVol   = last ? last.volume : '—';
+      const topCount = RAW_USERS.length;
+      box.className = 'search-result show';
+      box.innerHTML = `
+        <div class="result-not-found">
+          😔 你当前不在前 ${topCount} 名榜单内<br>
+          <span style="color:#fff;font-weight:700">目前第 ${topCount} 名门槛：${minVol} 笔</span><br>
+          <span style="color:var(--cyan)">达到 ${minVol} 笔即可上榜，继续加油冲榜！💪</span>
+        </div>`;
+    } else {
+      const u = { ...RAW_USERS[idx], rank: idx + 1 };
+
+      // 计算距下一称号门槛还差多少笔
+      let gapHtml = '';
+      if (u.rank > 10) {
+        const targetRank = u.rank > 100 ? 100 : 10;
+        const targetUser = RAW_USERS[targetRank - 1];
+        const targetName = targetRank === 10 ? '奇袭者之神（前10）' : '奇袭者人王（前100）';
+        const gap = targetUser ? targetUser.volume - u.volume + 1 : null;
+        if (gap !== null && gap > 0) {
+          gapHtml = `<div class="result-gap">还差 <strong>${gap}</strong> 笔升至 ${targetName} 🔥</div>`;
+        }
+      }
+
+      box.className = 'search-result show';
+      box.innerHTML = `
+        <div class="result-found">
+          <div class="result-rank-block">
+            <div class="result-rank-num">#${u.rank}</div>
+            <div class="result-rank-label">当前排名</div>
+          </div>
+          <div class="result-divider-v"></div>
+          <div class="result-info">
+            <div class="result-name">${u.name}</div>
+            ${titleTag(u.rank)}
+            <div class="result-vol">累计交易 <strong>${u.volume}</strong> 笔</div>
+            ${gapHtml}
+            <div style="font-size:11px;color:var(--text3);margin-top:6px">账号确认：UID ${u.uid}</div>
+          </div>
+        </div>`;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('searchInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') searchUser();
+    });
+  });
+
+  /* ─── 称号标签 ─── */
+  function titleTag(rank) {
+    if (rank <= 10)  return '<span class="title-badge title-god">奇袭者之神</span>';
+    if (rank <= 100) return '<span class="title-badge title-king">奇袭者人王</span>';
+    return '<span class="title-badge title-ash">灰烬行者</span>';
+  }
+
+  /* ─── 渲染 TOP 3 领奖台 ─── */
+  function renderPodium() {
+    const medals = ['🥇','🥈','🥉'];
+    const order  = [1, 0, 2];
+    const cls    = ['p1','p2','p3'];
+    let html = '<div class="podium-row">';
+    order.forEach(i => {
+      const u = USERS[i];
+      html += `
+        <div class="podium-item ${cls[i]}">
+          <div class="pod-avatar-wrap">
+            ${i === 0 ? '<div class="pod-crown">👑</div>' : ''}
+            <div class="pod-avatar ac${u.color}">${u.avatar}</div>
+          </div>
+          <div class="pod-name">${u.name}</div>
+          <div style="margin-bottom:4px;">${titleTag(u.rank)}</div>
+          <div class="pod-vol">${u.volume} 笔</div>
+          <div class="pod-stage">${medals[i]}</div>
+        </div>`;
+    });
+    html += '</div>';
+    document.getElementById('podium').innerHTML = html;
+  }
+
+  /* ─── 渲染 4–200 列表 ─── */
+  function renderList() {
+    let html = '';
+    for (let i = 3; i < USERS.length; i++) {
+      const u = USERS[i];
+      const isHot = i < 9;
+      html += `
+        <div class="rank-row">
+          <div class="rank-num ${isHot ? 'hot' : ''}">${u.rank}</div>
+          <div class="rank-user">
+            <div class="rank-ava ac${u.color}">${u.avatar}</div>
+            <div class="rank-info">
+              <div class="rank-name">${u.name}</div>
+              ${titleTag(u.rank)}
+            </div>
+          </div>
+          <div class="rank-vol">
+            <div class="rank-vol-num">${u.volume}</div>
+            <div class="rank-vol-unit">笔</div>
+          </div>
+        </div>`;
+    }
+    document.getElementById('rankList').innerHTML = html;
+  }
+
+  /* ─── 活动结束倒计时 ─── */
+  function updateCountdown() {
+    const end  = new Date('2026-03-09T23:59:59+08:00');
+    const diff = Math.max(0, end - new Date());
+    const p = n => String(n).padStart(2, '0');
+    document.getElementById('cd-d').textContent = p(Math.floor(diff / 864e5));
+    document.getElementById('cd-h').textContent = p(Math.floor((diff % 864e5) / 36e5));
+    document.getElementById('cd-m').textContent = p(Math.floor((diff % 36e5) / 6e4));
+    document.getElementById('cd-s').textContent = p(Math.floor((diff % 6e4) / 1e3));
+  }
+
+  /* ─── 数据刷新（每 30 分钟）─── */
+  const REFRESH_INTERVAL = 30 * 60; // 秒
+  let refreshCountdown = REFRESH_INTERVAL;
+  let lastUpdateTime   = new Date();
+
+  function fmtTime(d) {
+    return d.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function refreshData() {
+    loadData();
+  }
+
+  function tickRefresh() {
+    refreshCountdown--;
+    if (refreshCountdown <= 0) {
+      refreshData();
+    }
+    const mm = String(Math.floor(refreshCountdown / 60)).padStart(2, '0');
+    const ss = String(refreshCountdown % 60).padStart(2, '0');
+    document.getElementById('nextRefresh').textContent = `${mm}:${ss}`;
+  }
+
+  /* ─── 初始化 ─── */
+  loadData();   // 首次加载真实数据
+  updateCountdown();
+  document.getElementById('lastRefresh').textContent = fmtTime(lastUpdateTime);
+
+  setInterval(updateCountdown, 1000); // 活动倒计时（每秒）
+  setInterval(tickRefresh, 1000);     // 数据刷新倒计时（每秒 tick，每 30min 拉数据）
+</script>
+</body>
+</html>
