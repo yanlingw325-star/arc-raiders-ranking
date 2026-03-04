@@ -638,6 +638,54 @@
       font-size: 11px; color: var(--text3); line-height: 1.75;
     }
 
+    /* ── 侧边目录 ── */
+    .toc-wrap {
+      position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+      z-index: 100; display: flex; align-items: center;
+      transition: transform .3s ease;
+    }
+    .toc-toggle {
+      width: 28px; background: rgba(0,212,255,.18);
+      border: 1px solid rgba(0,212,255,.3); border-right: none;
+      border-radius: 10px 0 0 10px; padding: 14px 0;
+      cursor: pointer; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 5px;
+      transition: background .2s;
+    }
+    .toc-toggle:hover { background: rgba(0,212,255,.3); }
+    .toc-toggle-icon { font-size: 13px; line-height: 1; }
+    .toc-toggle-text {
+      writing-mode: vertical-rl; font-size: 10px; font-weight: 700;
+      color: var(--cyan); letter-spacing: 1px;
+    }
+    .toc-panel {
+      background: rgba(10,16,32,.95);
+      border: 1px solid rgba(0,212,255,.2); border-right: none;
+      border-radius: 14px 0 0 14px;
+      padding: 14px 12px; min-width: 130px;
+      backdrop-filter: blur(12px);
+      transition: opacity .25s, transform .25s;
+    }
+    .toc-panel.hidden {
+      opacity: 0; pointer-events: none;
+      transform: translateX(20px);
+    }
+    .toc-title {
+      font-size: 10px; font-weight: 700; color: var(--text3);
+      letter-spacing: 1px; margin-bottom: 10px; padding-left: 4px;
+    }
+    .toc-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 8px; border-radius: 8px; cursor: pointer;
+      text-decoration: none; color: var(--text2);
+      font-size: 12px; font-weight: 600;
+      transition: background .15s, color .15s;
+      white-space: nowrap;
+    }
+    .toc-item:hover { background: rgba(0,212,255,.1); color: #fff; }
+    .toc-item.active { background: rgba(0,212,255,.15); color: var(--cyan); }
+    .toc-item-icon { font-size: 14px; flex-shrink: 0; }
+
     /* ════════════════════════════════════════
        AVATAR COLORS
     ════════════════════════════════════════ */
@@ -663,7 +711,7 @@
 <!-- ══════════════════════════════════════
      HEADER
 ══════════════════════════════════════ -->
-<div class="header">
+<div class="header" id="sec-top">
   <div class="hdr-grid"></div>
   <div class="hdr-glow-a"></div>
   <div class="hdr-glow-b"></div>
@@ -713,6 +761,7 @@
 ══════════════════════════════════════ -->
 
 <!-- 活动奖品1 -->
+<div id="sec-prizes">
 <div class="sec">
   <div class="sec-title">活动奖品1 · ARC CDK 本体抽奖</div>
   <div class="prize-card p-gold" style="display:flex; align-items:center; gap:14px; padding:18px;">
@@ -744,8 +793,7 @@
 <!-- ══════════════════════════════════════
      RULES — 重新设计
 ══════════════════════════════════════ -->
-<div class="sec">
-  <div class="sec-title">活动规则</div>
+<div class="sec" id="sec-rules">
 
   <!-- 活动海报 -->
   <img src="./d692dd55a33a6761f27a7ff23fdd33d4.jpg" alt="活动说明海报"
@@ -826,7 +874,7 @@
 <!-- ══════════════════════════════════════
      CTA 强提醒专区
 ══════════════════════════════════════ -->
-<div class="cta-wrap">
+<div class="cta-wrap" id="sec-cta">
   <div class="cta-badge">⚡ 立即参与</div>
   <div class="cta-desc">
     千岛 APP 交易 ARC 最全物资冲榜吧！<br>
@@ -894,6 +942,25 @@
 <div class="footer">
   每 30 分钟自动刷新一次 · 排名仅供参考<br>
   <span style="opacity:.45">© 千岛 · ARC Raiders 新赛季活动</span>
+</div>
+
+<!-- ══════════════════════════════════════
+     侧边目录
+══════════════════════════════════════ -->
+<div class="toc-wrap" id="tocWrap">
+  <div class="toc-toggle" onclick="toggleToc()" title="目录">
+    <span class="toc-toggle-icon">☰</span>
+    <span class="toc-toggle-text">目录</span>
+  </div>
+  <div class="toc-panel" id="tocPanel">
+    <div class="toc-title">页面导航</div>
+    <a class="toc-item" href="#sec-top">     <span class="toc-item-icon">🏠</span> 活动首页</a>
+    <a class="toc-item" href="#sec-prizes">  <span class="toc-item-icon">🎁</span> 活动奖品</a>
+    <a class="toc-item" href="#sec-rules">   <span class="toc-item-icon">📋</span> 活动规则</a>
+    <a class="toc-item" href="#sec-cta">     <span class="toc-item-icon">⚡</span> 立即参与</a>
+    <a class="toc-item" href="#my-rank">     <span class="toc-item-icon">🔍</span> 查询排名</a>
+    <a class="toc-item" href="#leaderboard"> <span class="toc-item-icon">🏆</span> 排行榜</a>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════
@@ -1103,6 +1170,35 @@
 
   setInterval(updateCountdown, 1000); // 活动倒计时（每秒）
   setInterval(tickRefresh, 1000);     // 数据刷新倒计时（每秒 tick，每 30min 拉数据）
+
+  /* ─── 侧边目录 ─── */
+  let tocOpen = true;
+  function toggleToc() {
+    tocOpen = !tocOpen;
+    document.getElementById('tocPanel').classList.toggle('hidden', !tocOpen);
+    document.querySelector('.toc-toggle-icon').textContent = tocOpen ? '☰' : '❯';
+  }
+
+  // 滚动高亮当前区块
+  const tocSections = [
+    { id: 'sec-top',     link: 'a[href="#sec-top"]' },
+    { id: 'sec-prizes',  link: 'a[href="#sec-prizes"]' },
+    { id: 'sec-rules',   link: 'a[href="#sec-rules"]' },
+    { id: 'sec-cta',     link: 'a[href="#sec-cta"]' },
+    { id: 'my-rank',     link: 'a[href="#my-rank"]' },
+    { id: 'leaderboard', link: 'a[href="#leaderboard"]' },
+  ];
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY + 120;
+    let current = tocSections[0].link;
+    for (const s of tocSections) {
+      const el = document.getElementById(s.id);
+      if (el && el.offsetTop <= scrollY) current = s.link;
+    }
+    document.querySelectorAll('.toc-item').forEach(el => el.classList.remove('active'));
+    const active = document.querySelector(current);
+    if (active) active.classList.add('active');
+  }, { passive: true });
 </script>
 </body>
 </html>
