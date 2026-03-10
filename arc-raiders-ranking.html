@@ -773,7 +773,7 @@
   <div class="countdown-wrap" style="justify-content:center; text-align:center; padding: 20px 16px;">
     <div>
       <div class="cd-label" style="font-size:18px; font-weight:800; color:#ffc800; margin-bottom:8px;">🎉 活动已圆满结束</div>
-      <div class="cd-hint" style="font-size:14px; line-height:1.8;">感谢所有参与本次 ARC Raiders 交易活动的玩家！<br>获奖名单将于近期公布，请持续关注千岛官方公告。</div>
+      <div class="cd-hint" style="font-size:14px; line-height:1.8;">感谢所有参与本次 ARC Raiders 交易活动的玩家！<br>🎖️ 社区徽章中奖名单将于近期公布，请持续关注千岛官方公告。<br><span style="color:var(--cyan);font-weight:600">期待与大家在下次活动中再次相见，一起在千岛书写属于奇袭者的传奇！</span></div>
     </div>
   </div>
 
@@ -828,16 +828,6 @@
 <!-- ══════════════════════════════════════
      CTA 强提醒专区
 ══════════════════════════════════════ -->
-<div class="cta-wrap" id="sec-cta">
-  <div class="cta-badge">⚡ 立即参与</div>
-  <div class="cta-desc">
-    千岛 APP 交易 ARC 最全物资冲榜吧！<br>
-    <strong>PC 端目前仅支持金币交易</strong>，更多物资请前往 APP 完成交易
-  </div>
-  <a href="https://qiandao.com/currency/" target="_blank" class="cta-btn">
-    🖥️ 立即前往千岛 PC 端交易
-  </a>
-</div>
 
 <!-- ══════════════════════════════════════
      查询我的排名
@@ -913,7 +903,6 @@
     <div class="toc-title">页面导航</div>
     <a class="toc-item" href="#sec-top">     <span class="toc-item-icon">🏠</span> 活动首页</a>
     <a class="toc-item" href="#sec-prizes">  <span class="toc-item-icon">🎁</span> 徽章规则</a>
-    <a class="toc-item" href="#sec-cta">     <span class="toc-item-icon">⚡</span> 立即参与</a>
     <a class="toc-item" href="#my-rank">     <span class="toc-item-icon">🔍</span> 查询排名</a>
     <a class="toc-item" href="#leaderboard"> <span class="toc-item-icon">🏆</span> 排行榜</a>
   </div>
@@ -980,45 +969,32 @@
     const idx = RAW_USERS.findIndex(u => u.uid === maskedInput);
 
     if (idx === -1) {
-      const last     = RAW_USERS[RAW_USERS.length - 1];
-      const minVol   = last ? last.volume : '—';
-      const topCount = RAW_USERS.length;
       box.className = 'search-result show';
       box.innerHTML = `
         <div class="result-not-found">
-          😔 你当前不在前 ${topCount} 名榜单内<br>
-          <span style="color:#fff;font-weight:700">目前第 ${topCount} 名门槛：${minVol} 笔</span><br>
-          <span style="color:var(--cyan)">达到 ${minVol} 笔即可上榜，继续加油冲榜！💪</span>
+          🎉 感谢你参与本次 ARC Raiders 活动！<br>
+          <span style="color:var(--cyan);font-weight:600">CDK 抽奖及社区徽章抽奖结果将于近期公布</span><br>
+          <span style="color:var(--text3);font-size:11px">请持续关注千岛官方公告，期待与你再次相见 💙</span>
         </div>`;
     } else {
       const u = { ...RAW_USERS[idx], rank: idx + 1 };
-
-      // 计算距下一称号门槛还差多少笔
-      let gapHtml = '';
-      if (u.rank > 10) {
-        const targetRank = u.rank > 100 ? 100 : 10;
-        const targetUser = RAW_USERS[targetRank - 1];
-        const targetName = targetRank === 10 ? '奇袭者之神（前10）' : '奇袭者人王（前100）';
-        const gap = targetUser ? targetUser.volume - u.volume + 1 : null;
-        if (gap !== null && gap > 0) {
-          gapHtml = `<div class="result-gap">还差 <strong>${gap}</strong> 笔升至 ${targetName} 🔥</div>`;
-        }
-      }
-
+      const inBadge = u.rank <= 200;
       box.className = 'search-result show';
       box.innerHTML = `
         <div class="result-found">
           <div class="result-rank-block">
             <div class="result-rank-num">#${u.rank}</div>
-            <div class="result-rank-label">当前排名</div>
+            <div class="result-rank-label">社区徽章排名</div>
           </div>
           <div class="result-divider-v"></div>
           <div class="result-info">
             <div class="result-name">${u.name}</div>
             ${titleTag(u.rank)}
-            <div class="result-vol">累计交易 <strong>${u.volume}</strong> 笔</div>
-            ${gapHtml}
-            <div style="font-size:11px;color:var(--text3);margin-top:6px">账号确认：UID ${u.uid}</div>
+            <div style="margin-top:10px;display:flex;flex-direction:column;gap:5px">
+              <div style="font-size:12px">🎮 <strong>CDK 抽奖：</strong><span style="color:#4ade80;font-weight:700">✅ 已成功参与</span></div>
+              <div style="font-size:12px">🎖️ <strong>社区徽章抽奖：</strong><span style="color:#4ade80;font-weight:700">✅ 已成功参与</span>，排名第 <strong style="color:var(--cyan)">${u.rank}</strong> 名</div>
+            </div>
+            <div style="font-size:11px;color:var(--text3);margin-top:8px">账号确认：UID ${u.uid}</div>
           </div>
         </div>`;
     }
@@ -1141,7 +1117,6 @@
   const tocSections = [
     { id: 'sec-top',     link: 'a[href="#sec-top"]' },
     { id: 'sec-prizes',  link: 'a[href="#sec-prizes"]' },
-    { id: 'sec-cta',     link: 'a[href="#sec-cta"]' },
     { id: 'my-rank',     link: 'a[href="#my-rank"]' },
     { id: 'leaderboard', link: 'a[href="#leaderboard"]' },
   ];
