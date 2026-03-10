@@ -1098,16 +1098,6 @@
     document.getElementById('rankList').innerHTML = html;
   }
 
-  /* ─── 活动结束倒计时 ─── */
-  function updateCountdown() {
-    const end  = new Date('2026-03-09T23:59:59+08:00');
-    const diff = Math.max(0, end - new Date());
-    const p = n => String(n).padStart(2, '0');
-    document.getElementById('cd-d').textContent = p(Math.floor(diff / 864e5));
-    document.getElementById('cd-h').textContent = p(Math.floor((diff % 864e5) / 36e5));
-    document.getElementById('cd-m').textContent = p(Math.floor((diff % 36e5) / 6e4));
-    document.getElementById('cd-s').textContent = p(Math.floor((diff % 6e4) / 1e3));
-  }
 
   /* ─── 数据刷新（每 30 分钟）─── */
   const REFRESH_INTERVAL = 30 * 60; // 秒
@@ -1133,12 +1123,10 @@
   }
 
   /* ─── 初始化 ─── */
-  loadData();   // 首次加载真实数据
-  updateCountdown();
+  loadData();
   document.getElementById('lastRefresh').textContent = fmtTime(lastUpdateTime);
 
-  setInterval(updateCountdown, 1000); // 活动倒计时（每秒）
-  setInterval(tickRefresh, 1000);     // 数据刷新倒计时（每秒 tick，每 30min 拉数据）
+  setInterval(tickRefresh, 1000);
 
   /* ─── 侧边目录 ─── */
   let tocOpen = true;
