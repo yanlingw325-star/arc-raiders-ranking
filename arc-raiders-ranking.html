@@ -645,8 +645,8 @@
     ════════════════════════════════════════ */
     .rank-list { padding: 0 16px 80px; }
     .rank-row {
-      display: grid; grid-template-columns: 44px minmax(100px, 180px) 68px;
-      gap: 10px; align-items: center; justify-content: center;
+      display: grid; grid-template-columns: 44px 1fr;
+      gap: 10px; align-items: center;
       padding: 11px 0; border-bottom: 1px solid var(--border);
     }
     .rank-num { text-align: center; font-size: 15px; font-weight: 700; color: var(--text3); }
@@ -926,7 +926,6 @@
   <div class="lb-cols">
     <div class="lb-col">排名</div>
     <div class="lb-col">用户</div>
-    <div class="lb-col" style="text-align:right">交易量</div>
   </div>
 </div>
 
@@ -1095,7 +1094,6 @@
           </div>
           <div class="pod-name">${u.name}</div>
           <div style="margin-bottom:4px;">${titleTag(u.rank)}</div>
-          <div class="pod-vol">${u.volume} 笔</div>
           <div class="pod-stage">${medals[i]}</div>
         </div>`;
     });
@@ -1115,7 +1113,6 @@
           <div class="tt-info">
             <div class="tt-name">${u.name}</div>
             ${titleTag(u.rank)}
-            <div class="tt-vol">${u.volume} 笔</div>
           </div>
         </div>`;
     }
@@ -1136,10 +1133,6 @@
               <div class="rank-name">${u.name}</div>
               ${titleTag(u.rank)}
             </div>
-          </div>
-          <div class="rank-vol">
-            <div class="rank-vol-num">${u.volume}</div>
-            <div class="rank-vol-unit">笔</div>
           </div>
         </div>`;
     }
